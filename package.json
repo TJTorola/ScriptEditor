@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "build:watch": "webpack -w"
   },
   "author": "Tyler Torola",
   "license": "ISC",
@@ -18,6 +19,7 @@
     "webpack": "^2.2.1"
   },
   "dependencies": {
+    "quill": "^1.2.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
   }
