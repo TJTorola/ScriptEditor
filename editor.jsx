@@ -11,6 +11,7 @@ class ScriptEditor extends React.Component {
 
     this.addToken = this.addToken.bind(this);
     this.selectionChange = this.selectionChange.bind(this);
+    this.id = Math.random().toString();
   }
 
   componentDidMount() {
@@ -41,6 +42,7 @@ class ScriptEditor extends React.Component {
   render() {
     return (
       <div
+        data-id={this.id}
         ref={(input) => this.input = input}
         className="editor"
       />

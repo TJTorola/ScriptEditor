@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
   const editors = [];
 
-  ReactDOM.render(<Editor ref={e => editors.push(e)} />, document.getElementById('editor'));
+  ReactDOM.render(<Editor ref={e => editors.push(e)} />, document.getElementById('editor-one'));
+  ReactDOM.render(<Editor ref={e => editors.push(e)} />, document.getElementById('editor-two'));
   ReactDOM.render(<Toolbar tokens={tokens} editors={editors}/>, document.getElementById('toolbar'));
 });

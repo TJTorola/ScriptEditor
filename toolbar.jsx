@@ -1,7 +1,15 @@
 import React from 'react';
 
 const addToken = (editors, token) => () => {
-  editors[0].addToken(token);
+  const focus = document.activeElement;
+  if (!focus.classList.contains("ql-editor")) { return; }
+
+  const id = focus.parentElement.dataset.id;
+  editors.forEach(editor => {
+    if (editor.id === id) {
+      editor.addToken(token);
+    }
+  });
 };
 
 const tokenButton = editors => (token, idx) => (
