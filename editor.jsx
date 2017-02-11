@@ -29,13 +29,13 @@ class ScriptEditor extends React.Component {
     // debugger;
   }
 
-  addToken() {
+  addToken(token) {
     const { quill } = this;
     const { index, length } = this.quill.getSelection(true);
 
     quill.deleteText(index, length);
-    quill.insertText(index, 'token', { bold: true });
-    quill.setSelection(index + 5);
+    quill.insertText(index, token, { bold: true });
+    quill.setSelection(index + token.length);
   }
 
   render() {

@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     'bar',
     'baz',
   ];
+  const editors = [];
 
-  debugger;
-  ReactDOM.render(<Editor />, document.getElementById('editor'));
-  ReactDOM.render(<Toolbar tokens={tokens} />, document.getElementById('toolbar'));
+  ReactDOM.render(<Editor ref={e => editors.push(e)} />, document.getElementById('editor'));
+  ReactDOM.render(<Toolbar tokens={tokens} editors={editors}/>, document.getElementById('toolbar'));
 });
