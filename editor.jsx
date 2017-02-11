@@ -1,6 +1,10 @@
 import React from 'react';
 import Quill from 'quill';
 
+const QUILL_OPTIONS = {
+  formats: ['bold'],
+}
+
 class ScriptEditor extends React.Component {
   constructor(props) {
     super(props);
@@ -10,7 +14,7 @@ class ScriptEditor extends React.Component {
   }
 
   componentDidMount() {
-    this.quill = new Quill(this.input);
+    this.quill = new Quill(this.input, QUILL_OPTIONS);
     this.quill.on('text-change', this.textChange);
     this.quill.on('selection-change', this.selectionChange);
   }
@@ -36,18 +40,10 @@ class ScriptEditor extends React.Component {
 
   render() {
     return (
-      <div>
-        <div
-          ref={(input) => this.input = input}
-          className="editor"
-        />
-        <div
-          ref={(button) => this.button = button}
-          onClick={this.addToken}
-        >
-          Add Token
-        </div>
-      </div>
+      <div
+        ref={(input) => this.input = input}
+        className="editor"
+      />
     );
   }
 };
