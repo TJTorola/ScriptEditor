@@ -3,6 +3,7 @@ import {
   Editor,
   EditorState,
   Modifier,
+  RichUtils,
 } from 'draft-js';
 
 class TokenEditor extends React.Component {
@@ -17,20 +18,44 @@ class TokenEditor extends React.Component {
     this.addToken = this.addToken.bind(this);
   }
 
-  addToken() {
+  addToken(token) {
+    return () => {
+      const entityKey = this.createTokenEntity(token);
+      this.replaceTextWithTokenEntity(token, entityKey);
+    };
+  }
+
+  createTokenEntity(token) {
     const { editorState } = this.state,
           contentState = editorState.getCurrentContent(),
-          selectionState = editorState.getSelection();
+          contentWithEntity = contentState.createEntity(
+            'TOKEN',
+            'IMMUTABLE',
+            { token }
+          ),
+          newEditorState = EditorState.createWithContent(contentWithEntity);
 
-    const newContentState = Modifier.replaceText(
-      contentState,
-      selectionState,
-      'token'
-    );
+    this.setEditorState(newEditorState);
+    return contentWithEntity.getLastCreatedEntityKey();
+  }
 
-    const newEditorState = EditorState.createWithContent(newContentState);
+  replaceTextWithTokenEntity(token, entityKey) {
+    const { editorState } = this.state,
+          contentState = editorState.getCurrentContent(),
+          selectionState = editorState.getSelection(),
+          contentWithToken = Modifier.replaceText(
+            contentState,
+            selectionState,
+            token,
+            [],
+            entityKey,
+          ),
+          newEditorState = EditorState.createWithContent(contentWithToken);
+
     this.setEditorState(newEditorState);
   }
+
+
 
   render() {
     return (
@@ -41,7 +66,7 @@ class TokenEditor extends React.Component {
         />
         <div
           onMouseDown={ (e) => e.preventDefault() }
-          onClick={ this.addToken }
+          onClick={ this.addToken('token') }
         >
           Add Token
         </div>
