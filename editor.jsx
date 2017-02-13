@@ -4,14 +4,40 @@ import {
   EditorState,
   Modifier,
   RichUtils,
+  CompositeDecorator,
 } from 'draft-js';
+
+const TokenSpan = (props) => (
+  <strong {...props}>{props.children}</strong>
+);
+
+const tokenStategy = (contentBlock, callback, contentState) => {
+  contentBlock.findEntityRanges(
+    (char) => {
+      const entityKey = char.getEntity();
+
+      return (
+        entityKey !== null &&
+        contentState.getEntity(entityKey).getType() === 'TOKEN'
+      );
+    },
+    callback,
+  );
+};
 
 class TokenEditor extends React.Component {
   constructor(props) {
     super(props);
 
+    this.decorator = new CompositeDecorator([
+      {
+        strategy: tokenStategy,
+        component: TokenSpan,
+      }
+    ]);
+
     this.state = {
-      editorState: EditorState.createEmpty()
+      editorState: EditorState.createEmpty(this.decorator)
     };
 
     this.setEditorState = (editorState) => this.setState({ editorState });
@@ -26,31 +52,37 @@ class TokenEditor extends React.Component {
   }
 
   createTokenEntity(token) {
-    const { editorState } = this.state,
-          contentState = editorState.getCurrentContent(),
-          contentWithEntity = contentState.createEntity(
-            'TOKEN',
-            'IMMUTABLE',
-            { token }
-          ),
-          newEditorState = EditorState.createWithContent(contentWithEntity);
+    const { editorState } = this.state;
+    const contentState = editorState.getCurrentContent();
+    const contentWithEntity = contentState.createEntity(
+      'TOKEN',
+      'IMMUTABLE',
+      { token }
+    );
+    const newEditorState = EditorState.set(
+      editorState,
+      { currentContent: contentWithEntity }
+    );
 
     this.setEditorState(newEditorState);
     return contentWithEntity.getLastCreatedEntityKey();
   }
 
   replaceTextWithTokenEntity(token, entityKey) {
-    const { editorState } = this.state,
-          contentState = editorState.getCurrentContent(),
-          selectionState = editorState.getSelection(),
-          contentWithToken = Modifier.replaceText(
-            contentState,
-            selectionState,
-            token,
-            [],
-            entityKey,
-          ),
-          newEditorState = EditorState.createWithContent(contentWithToken);
+    const { editorState } = this.state;
+    const contentState = editorState.getCurrentContent();
+    const selectionState = editorState.getSelection();
+    const contentWithToken = Modifier.replaceText(
+      contentState,
+      selectionState,
+      token,
+      [],
+      entityKey,
+    );
+    const newEditorState = EditorState.set(
+      editorState,
+      { currentContent: contentWithToken }
+    );
 
     this.setEditorState(newEditorState);
   }
