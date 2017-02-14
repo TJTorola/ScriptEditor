@@ -1,5 +1,10 @@
 import React from 'react';
-import { CompositeDecorator } from 'draft-js';
+import {
+  CompositeDecorator,
+  EditorState,
+} from 'draft-js';
+
+const TOKEN_KEY = 'TOKEN';
 
 const TokenSpan = (props) => (
   <span className="token">{props.children}</span>
@@ -12,24 +17,24 @@ const tokenStategy = (contentBlock, callback, contentState) => {
 
       return (
         entityKey !== null &&
-        contentState.getEntity(entityKey).getType() === 'TOKEN'
+        contentState.getEntity(entityKey).getType() === TOKEN_KEY
       );
     },
     callback,
   );
 };
 
-const decorator = new CompositeDecorator([
+export const decorator = new CompositeDecorator([
   {
     strategy: tokenStategy,
     component: TokenSpan,
   }
 ]);
 
-const applyTokenEntity = (editorState, token) => {
+export const applyTokenEntity = (editorState, token) => {
   const contentState = editorState.getCurrentContent();
   const contentWithEntity = contentState.createEntity(
-    'TOKEN',
+    TOKEN_KEY,
     'IMMUTABLE',
     { token }
   );
@@ -43,9 +48,4 @@ const applyTokenEntity = (editorState, token) => {
     newEditorState,
     entityKey,
   };
-}
-
-export default {
-  decorator,
-  applyTokenEntity
 };

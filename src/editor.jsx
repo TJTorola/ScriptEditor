@@ -15,7 +15,7 @@ class TokenEditor extends React.Component {
     super(props);
 
     this.state = {
-      editorState: EditorState.createEmpty(tokenDecorator)
+      editorState: EditorState.createEmpty(decorator)
     };
     this.id = Math.random().toString();
     this.setEditorState = (editorState) => this.setState({ editorState });
