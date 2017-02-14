@@ -26,4 +26,26 @@ const decorator = new CompositeDecorator([
   }
 ]);
 
-export default decorator;
+const applyTokenEntity = (editorState, token) => {
+  const contentState = editorState.getCurrentContent();
+  const contentWithEntity = contentState.createEntity(
+    'TOKEN',
+    'IMMUTABLE',
+    { token }
+  );
+  const newEditorState = EditorState.set(
+    editorState,
+    { currentContent: contentWithEntity }
+  );
+  const entityKey = contentWithEntity.getLastCreatedEntityKey();
+
+  return {
+    newEditorState,
+    entityKey,
+  };
+}
+
+export default {
+  decorator,
+  applyTokenEntity
+};

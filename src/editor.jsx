@@ -5,7 +5,10 @@ import {
   Modifier,
 } from 'draft-js';
 
-import tokenDecorator from './token.jsx';
+import {
+  decorator,
+  applyTokenEntity
+} from './token.jsx';
 
 class TokenEditor extends React.Component {
   constructor(props) {
@@ -21,26 +24,15 @@ class TokenEditor extends React.Component {
 
   addToken(token) {
     return () => {
-      const entityKey = this.createTokenEntity(token);
+      const { editorState } = this.state;
+      const {
+        newEditorState,
+        entityKey,
+      } = applyTokenEntity(editorState, token);
+      this.setEditorState(newEditorState);
+
       this.replaceTextWithTokenEntity(token, entityKey);
     };
-  }
-
-  createTokenEntity(token) {
-    const { editorState } = this.state;
-    const contentState = editorState.getCurrentContent();
-    const contentWithEntity = contentState.createEntity(
-      'TOKEN',
-      'IMMUTABLE',
-      { token }
-    );
-    const newEditorState = EditorState.set(
-      editorState,
-      { currentContent: contentWithEntity }
-    );
-
-    this.setEditorState(newEditorState);
-    return contentWithEntity.getLastCreatedEntityKey();
   }
 
   replaceTextWithTokenEntity(token, entityKey) {
