@@ -14,7 +14,7 @@ const addToken = (editors, token) => () => {
 
 const tokenButton = editors => (token, idx) => (
   <span
-    className="button"
+    className="token-button"
     key={idx}
     onMouseDown={e => e.preventDefault()}
     onClick={addToken(editors, token)}
