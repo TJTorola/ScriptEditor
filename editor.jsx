@@ -8,7 +8,7 @@ import {
 } from 'draft-js';
 
 const TokenSpan = (props) => (
-  <strong {...props}>{props.children}</strong>
+  <span className="token">{props.children}</span>
 );
 
 const tokenStategy = (contentBlock, callback, contentState) => {
@@ -91,17 +91,11 @@ class TokenEditor extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="editor">
         <Editor
           editorState={this.state.editorState}
           onChange={this.setEditorState}
         />
-        <div
-          onMouseDown={ (e) => e.preventDefault() }
-          onClick={ this.addToken('token') }
-        >
-          Add Token
-        </div>
       </div>
     );
   }
