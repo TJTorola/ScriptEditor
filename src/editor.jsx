@@ -51,7 +51,18 @@ class TokenEditor extends React.Component {
       { currentContent: contentWithToken }
     );
 
-    this.setEditorState(newEditorState);
+    const collapsedSelectionState = newEditorState.getSelection();
+    const offset = collapsedSelectionState.getFocusOffset() + token.length;
+    const newSelection = selectionState
+      .set('anchorOffset', offset)
+      .set('focusOffset', offset);
+
+    const newSelectedEditorState = EditorState.set(
+      newEditorState,
+      { selection: newSelection }
+    );
+
+    this.setEditorState(newSelectedEditorState);
   }
 
   render() {
