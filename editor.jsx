@@ -29,6 +29,7 @@ class TokenEditor extends React.Component {
   constructor(props) {
     super(props);
 
+    this.id = Math.random().toString();
     this.decorator = new CompositeDecorator([
       {
         strategy: tokenStategy,
@@ -91,7 +92,10 @@ class TokenEditor extends React.Component {
 
   render() {
     return (
-      <div className="editor">
+      <div
+        className="editor"
+        data-id={this.id}
+      >
         <Editor
           editorState={this.state.editorState}
           onChange={this.setEditorState}
