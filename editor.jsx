@@ -3,44 +3,18 @@ import {
   Editor,
   EditorState,
   Modifier,
-  RichUtils,
-  CompositeDecorator,
 } from 'draft-js';
 
-const TokenSpan = (props) => (
-  <span className="token">{props.children}</span>
-);
-
-const tokenStategy = (contentBlock, callback, contentState) => {
-  contentBlock.findEntityRanges(
-    (char) => {
-      const entityKey = char.getEntity();
-
-      return (
-        entityKey !== null &&
-        contentState.getEntity(entityKey).getType() === 'TOKEN'
-      );
-    },
-    callback,
-  );
-};
+import tokenDecorator from './token.jsx';
 
 class TokenEditor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.id = Math.random().toString();
-    this.decorator = new CompositeDecorator([
-      {
-        strategy: tokenStategy,
-        component: TokenSpan,
-      }
-    ]);
-
     this.state = {
-      editorState: EditorState.createEmpty(this.decorator)
+      editorState: EditorState.createEmpty(tokenDecorator)
     };
-
+    this.id = Math.random().toString();
     this.setEditorState = (editorState) => this.setState({ editorState });
     this.addToken = this.addToken.bind(this);
   }
@@ -87,8 +61,6 @@ class TokenEditor extends React.Component {
 
     this.setEditorState(newEditorState);
   }
-
-
 
   render() {
     return (
