@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Editor from './editor.jsx';
-import Toolbar from './toolbar.jsx';
+import Editor from '../src/editor.jsx';
+import Toolbar from '../src/toolbar.jsx';
 
 document.addEventListener('DOMContentLoaded', () => {
   const tokens = [

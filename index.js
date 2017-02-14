@@ -1,5 +1,5 @@
-import Editor from './editor.jsx';
-import Toolbar from './toolbar.jsx';
+import Editor from './src/editor.jsx';
+import Toolbar from './src/toolbar.jsx';
 
 export default = {
   Editor,
