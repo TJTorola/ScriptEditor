@@ -3,6 +3,8 @@ import {
   EditorState
 } from 'draft-js';
 
+// () => ... => ({ editorState, ... }) => { editorState, ... }
+
 export const replaceWithText = (text) => ({ editorState, entityKey }) => {
   const contentState = editorState.getCurrentContent();
   const selectionState = editorState.getSelection();
@@ -20,6 +22,25 @@ export const replaceWithText = (text) => ({ editorState, entityKey }) => {
 
   return {
     editorState: newEditorState
+  };
+};
+
+export const applyImmutableEntity = (entityName) => (token) => ({ editorState }) => {
+  const contentState = editorState.getCurrentContent();
+  const contentWithEntity = contentState.createEntity(
+    entityName,
+    'IMMUTABLE',
+    { token }
+  );
+  const newEditorState = EditorState.set(
+    editorState,
+    { currentContent: contentWithEntity }
+  );
+  const entityKey = contentWithEntity.getLastCreatedEntityKey();
+
+  return {
+    editorState: newEditorState,
+    entityKey,
   };
 };
 

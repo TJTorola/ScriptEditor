@@ -1,8 +1,7 @@
 import React from 'react';
-import {
-  CompositeDecorator,
-  EditorState,
-} from 'draft-js';
+import { CompositeDecorator } from 'draft-js';
+
+import { applyImmutableEntity } from './draft-helpers';
 
 const TOKEN_KEY = 'TOKEN';
 
@@ -24,28 +23,10 @@ const tokenStategy = (contentBlock, callback, contentState) => {
   );
 };
 
+export const applyTokenEntity = applyImmutableEntity(TOKEN_KEY);
 export const decorator = new CompositeDecorator([
   {
     strategy: tokenStategy,
     component: TokenSpan,
   }
 ]);
-
-export const applyTokenEntity = (token) => ({ editorState }) => {
-  const contentState = editorState.getCurrentContent();
-  const contentWithEntity = contentState.createEntity(
-    TOKEN_KEY,
-    'IMMUTABLE',
-    { token }
-  );
-  const newEditorState = EditorState.set(
-    editorState,
-    { currentContent: contentWithEntity }
-  );
-  const entityKey = contentWithEntity.getLastCreatedEntityKey();
-
-  return {
-    editorState: newEditorState,
-    entityKey,
-  };
-};
