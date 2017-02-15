@@ -31,7 +31,7 @@ export const decorator = new CompositeDecorator([
   }
 ]);
 
-export const applyTokenEntity = (editorState, token) => {
+export const applyTokenEntity = (token) => ({ editorState }) => {
   const contentState = editorState.getCurrentContent();
   const contentWithEntity = contentState.createEntity(
     TOKEN_KEY,
@@ -45,7 +45,7 @@ export const applyTokenEntity = (editorState, token) => {
   const entityKey = contentWithEntity.getLastCreatedEntityKey();
 
   return {
-    newEditorState,
+    editorState: newEditorState,
     entityKey,
   };
 };

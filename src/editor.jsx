@@ -1,14 +1,8 @@
 import React from 'react';
-import {
-  Editor,
-  EditorState,
-  Modifier,
-} from 'draft-js';
+import { Editor, EditorState } from 'draft-js';
 
-import {
-  decorator,
-  applyTokenEntity
-} from './token.jsx';
+import { decorator, applyTokenEntity } from './token.jsx';
+import { replaceWithText, moveFocus } from './draft-helpers.js';
 
 class TokenEditor extends React.Component {
   constructor(props) {
@@ -25,44 +19,14 @@ class TokenEditor extends React.Component {
   addToken(token) {
     return () => {
       const { editorState } = this.state;
-      const {
-        newEditorState,
-        entityKey,
-      } = applyTokenEntity(editorState, token);
+      const newEditorState = [
+        applyTokenEntity(token),
+        replaceWithText(token),
+        moveFocus(token.length),
+      ].reduce((state, cb) => cb(state), { editorState }).editorState;
+
       this.setEditorState(newEditorState);
-
-      this.replaceTextWithTokenEntity(token, entityKey);
     };
-  }
-
-  replaceTextWithTokenEntity(token, entityKey) {
-    const { editorState } = this.state;
-    const contentState = editorState.getCurrentContent();
-    const selectionState = editorState.getSelection();
-    const contentWithToken = Modifier.replaceText(
-      contentState,
-      selectionState,
-      token,
-      [],
-      entityKey,
-    );
-    const newEditorState = EditorState.set(
-      editorState,
-      { currentContent: contentWithToken }
-    );
-
-    const collapsedSelectionState = newEditorState.getSelection();
-    const offset = collapsedSelectionState.getFocusOffset() + token.length;
-    const newSelection = selectionState
-      .set('anchorOffset', offset)
-      .set('focusOffset', offset);
-
-    const newSelectedEditorState = EditorState.set(
-      newEditorState,
-      { selection: newSelection }
-    );
-
-    this.setEditorState(newSelectedEditorState);
   }
 
   render() {
