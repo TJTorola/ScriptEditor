@@ -3,6 +3,12 @@ import {
   EditorState
 } from 'draft-js';
 
+export const pipe = (functions, editorState) => {
+  return functions
+    .reduce((state, func) => func(state), { editorState })
+    .editorState;
+}
+
 // () => ... => ({ editorState, ... }) => { editorState, ... }
 
 export const replaceWithText = (text) => ({ editorState, entityKey }) => {

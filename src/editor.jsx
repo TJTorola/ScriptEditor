@@ -2,7 +2,7 @@ import React from 'react';
 import { Editor, EditorState } from 'draft-js';
 
 import { decorator, applyTokenEntity } from './token.jsx';
-import { replaceWithText, moveFocus } from './draft-helpers.js';
+import { replaceWithText, moveFocus, pipe } from './draft-helpers.js';
 
 class TokenEditor extends React.Component {
   constructor(props) {
@@ -19,11 +19,11 @@ class TokenEditor extends React.Component {
   addToken(token) {
     return () => {
       const { editorState } = this.state;
-      const newEditorState = [
+      const newEditorState = pipe([
         applyTokenEntity(token),
         replaceWithText(token),
         moveFocus(token.length),
-      ].reduce((state, cb) => cb(state), { editorState }).editorState;
+      ], editorState);
 
       this.setEditorState(newEditorState);
     };
