@@ -3,8 +3,10 @@ import {
   EditorState
 } from 'draft-js';
 
-export const pipe = (functions, editorState) => {
-  return functions
+export const pipe = (...args) => {
+  const [editorState, ...funcs] = args;
+
+  return funcs
     .reduce((state, func) => func(state), { editorState })
     .editorState;
 }
