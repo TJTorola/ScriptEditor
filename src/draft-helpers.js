@@ -27,8 +27,8 @@ export const moveFocus = (offset) => ({ editorState }) => {
   const selectionState = editorState.getSelection();
   const newFocus = selectionState.getFocusOffset() + offset;
   const newSelection = selectionState
-    .set('anchorOffset', offset)
-    .set('focusOffset', offset);
+    .set('anchorOffset', newFocus)
+    .set('focusOffset', newFocus);
 
   const newEditorState = EditorState.set(
     editorState,
