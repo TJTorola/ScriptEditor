@@ -5,10 +5,24 @@ import Editor from '../src/editor.jsx';
 import Toolbar from '../src/toolbar.jsx';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const tokens = [
-    'foo',
-    'bar',
-    'baz',
+  const actions = [
+    {
+      type: 'ADD_TOKEN',
+      text: 'Agent Token',
+      token: {
+        key: 'agent-name',
+        length: 10,
+      }
+    },
+    {
+      type: 'ADD_TEXT',
+      text: 'Plaintext Input',
+    },
+    {
+      type: 'CUSTOM',
+      text: 'Custom Callback',
+      callback: (event, addToken, addText) => {}
+    }
   ];
   const editors = [];
 
@@ -23,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   );
 
   ReactDOM.render(
-    <Toolbar tokens={tokens} editors={editors}/>,
+    <Toolbar actions={actions} editors={editors}/>,
     document.getElementById('toolbar')
   );
 });
