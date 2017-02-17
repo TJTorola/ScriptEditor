@@ -14,20 +14,23 @@ class TokenEditor extends React.Component {
     this.id = Math.random().toString();
     this.setEditorState = (editorState) => this.setState({ editorState });
     this.addToken = this.addToken.bind(this);
+    this.focus = this.focus.bind(this);
   }
 
-  addToken(token) {
-    return () => {
-      const { editorState } = this.state;
-      const newEditorState = pipe(
-        editorState,
-        applyTokenEntity(token),
-        replaceWithText(token),
-        moveFocus(token.length),
-      );
+  addToken(text, token) {
+    const { editorState } = this.state;
+    const newEditorState = pipe(
+      editorState,
+      applyTokenEntity(token),
+      replaceWithText(text),
+      moveFocus(text.length),
+    );
 
-      this.setEditorState(newEditorState);
-    };
+    this.setEditorState(newEditorState);
+  }
+
+  focus() {
+    this.editor && this.editor.focus()
   }
 
   render() {
@@ -35,10 +38,12 @@ class TokenEditor extends React.Component {
       <div
         className="editor"
         data-id={this.id}
+        onClick={ this.focus }
       >
         <Editor
           editorState={this.state.editorState}
           onChange={this.setEditorState}
+          ref={(editor) => this.editor = editor}
         />
       </div>
     );

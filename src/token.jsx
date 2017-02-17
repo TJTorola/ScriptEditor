@@ -14,10 +14,8 @@ const tokenStategy = (contentBlock, callback, contentState) => {
     (char) => {
       const entityKey = char.getEntity();
 
-      return (
-        entityKey !== null &&
-        contentState.getEntity(entityKey).getType() === TOKEN_KEY
-      );
+      if (!entityKey) return false;
+      return contentState.getEntity(entityKey).getType() === TOKEN_KEY;
     },
     callback,
   );
