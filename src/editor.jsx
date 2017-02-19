@@ -24,6 +24,8 @@ class TokenEditor extends React.Component {
       applyTokenEntity(token),
       replaceWithText(text),
       moveFocus(text.length),
+      replaceWithText(' '),
+      moveFocus(1),
     );
 
     this.setEditorState(newEditorState);
