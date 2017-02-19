@@ -17,6 +17,17 @@ class TokenEditor extends React.Component {
     this.focus = this.focus.bind(this);
   }
 
+  addText(text) {
+    const { editorState } = this.state;
+    const newEditorState = pipe(
+      editorState,
+      replaceWithText(`${text} `),
+      moveFocus(text.length + 1),
+    );
+
+    this.setEditorState(newEditorState);
+  }
+
   addToken(text, token) {
     const { editorState } = this.state;
     const newEditorState = pipe(
