@@ -42,6 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
       text: 'Plaintext Input',
     },
     {
+      type: 'ADD_TEXT',
+      text: '💩'
+    },
+    {
       type: 'CUSTOM',
       text: 'Custom Callback',
       callback,
