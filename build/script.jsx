@@ -4,6 +4,29 @@ import ReactDOM from 'react-dom';
 import Editor from '../src/editor.jsx';
 import Toolbar from '../src/toolbar.jsx';
 
+const callback = (_, addToken, addText) => {
+  setTimeout(() => {
+    addToken('foo', {
+      key: 'foo',
+      length: 3,
+    });
+  }, 1000);
+
+  setTimeout(() => {
+    addToken('bar', {
+      key: 'bar',
+      length: 3,
+    });
+  }, 2000);
+
+  setTimeout(() => {
+    addToken('baz', {
+      key: 'baz',
+      length: 3,
+    });
+  }, 3000);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const actions = [
     {
@@ -21,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       type: 'CUSTOM',
       text: 'Custom Callback',
-      callback: (event, addToken, addText) => {}
+      callback,
     }
   ];
   const editors = [];
